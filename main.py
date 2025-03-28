@@ -3,16 +3,17 @@ from telegram.ext import Application, CommandHandler, CallbackQueryHandler, Cont
 import sqlite3
 import logging
 
-# Настройка логов
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Конфигурация бота
+
+
+
+
 TOKEN = "токен"
 ADMIN_ID = 123456789
 DB_NAME = "bot_database.db"
 
-# Инициализация базы данных
 def init_db():
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
@@ -26,7 +27,9 @@ def init_db():
     conn.commit()
     conn.close()
 
-# Сохраняем пользователя в БД
+
+
+
 def save_user(user_id, role, username=None):
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
@@ -35,7 +38,9 @@ def save_user(user_id, role, username=None):
     conn.commit()
     conn.close()
 
-# Получаем роль пользователя
+
+
+
 def get_user_role(user_id):
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
@@ -44,7 +49,7 @@ def get_user_role(user_id):
     conn.close()
     return result[0] if result else None
 
-# ===== ОСНОВНЫЕ ФУНКЦИИ БОТА =====
+
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
@@ -60,9 +65,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             text='Привет! Выберите свою роль:',
             reply_markup=reply_markup
         )
-
-# ===== ФУНКЦИИ ПРЕПОДАВАТЕЛЯ =====
-
 async def teacher_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     save_user(query.from_user.id, "teacher", query.from_user.username)
@@ -80,21 +82,23 @@ async def teacher_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text="Меню преподавателя:",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
+    
 
 async def teacher_about(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     text = "📚 О компании:\n\nМы - образовательная платформа..."
     keyboard = [
-        [InlineKeyboardButton("Подробнее на сайте", url="https://example.com/about")],
+        [InlineKeyboardButton("Подробнее на сайте", url="https://")],
         [InlineKeyboardButton("Назад", callback_data='back_to_teacher')]
     ]
     await query.edit_message_text(text=text, reply_markup=InlineKeyboardMarkup(keyboard))
+
 
 async def teacher_structure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     text = "🏢 Структура компании:\n\n1. Учебный отдел\n2. Методический отдел..."
     keyboard = [
-        [InlineKeyboardButton("Подробнее", url="https://example.com/structure")],
+        [InlineKeyboardButton("Подробнее", url="https://")],
         [InlineKeyboardButton("Назад", callback_data='back_to_teacher')]
     ]
     await query.edit_message_text(text=text, reply_markup=InlineKeyboardMarkup(keyboard))
@@ -102,14 +106,16 @@ async def teacher_structure(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def teacher_courses(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     keyboard = [
-        [InlineKeyboardButton("Основные курсы", url="https://example.com/main_courses")],
-        [InlineKeyboardButton("Летняя школа", url="https://example.com/summer_school")],
+        [InlineKeyboardButton("Основные курсы", url="https://")],
+        [InlineKeyboardButton("Летняя школа", url="https://")],
         [InlineKeyboardButton("Назад", callback_data='back_to_teacher')]
     ]
     await query.edit_message_text(
         text="Выберите тип курсов:",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
+
+
 
 async def teacher_partners(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -127,8 +133,8 @@ async def teacher_partners(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def teacher_rost(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     keyboard = [
-        [InlineKeyboardButton("Олимпиада", url="https://example.com/rost/olympiad")],
-        [InlineKeyboardButton("Курсы", url="https://example.com/rost/courses")],
+        [InlineKeyboardButton("Олимпиада", url="https://")],
+        [InlineKeyboardButton("Курсы", url="https://")],
         [InlineKeyboardButton("Назад к партнёрам", callback_data='teacher_partners')]
     ]
     await query.edit_message_text(
@@ -139,18 +145,17 @@ async def teacher_rost(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def teacher_proskul(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     keyboard = [
-        [InlineKeyboardButton("Курсы", url="https://example.com/proskul/courses")],
+        [InlineKeyboardButton("Курсы", url="https://")],
         [InlineKeyboardButton("Назад к партнёрам", callback_data='teacher_partners')]
     ]
     await query.edit_message_text(
         text="ПРОСКУЛ - доступные разделы:",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
-
 async def teacher_gym10(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     keyboard = [
-        [InlineKeyboardButton("Курсы", url="https://example.com/gym10/courses")],
+        [InlineKeyboardButton("Курсы", url="https://")],
         [InlineKeyboardButton("Назад к партнёрам", callback_data='teacher_partners')]
     ]
     await query.edit_message_text(
@@ -158,11 +163,13 @@ async def teacher_gym10(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
+
+
 async def teacher_motivation(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     keyboard = [
-        [InlineKeyboardButton("Обратная связь", url="https://example.com/motivation/feedback")],
-        [InlineKeyboardButton("Мовави Boost", url="https://example.com/motivation/movavi")],
+        [InlineKeyboardButton("Обратная связь", url="https://")],
+        [InlineKeyboardButton("Мовави Boost", url="https://")],
         [InlineKeyboardButton("Назад", callback_data='back_to_teacher')]
     ]
     await query.edit_message_text(
@@ -170,22 +177,21 @@ async def teacher_motivation(update: Update, context: ContextTypes.DEFAULT_TYPE)
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
+
+
 async def teacher_method(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.edit_message_text(
         text="Наш метод работы:",
         reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton("Описание метода", url="https://example.com/method")],
+            [InlineKeyboardButton("Описание метода", url="https://")],
             [InlineKeyboardButton("Назад", callback_data='back_to_teacher')]
         ])
     )
 
-# ===== ФУНКЦИИ КУРАТОРА =====
-
 async def curator_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     save_user(query.from_user.id, "curator", query.from_user.username)
-    
     keyboard = [
         [InlineKeyboardButton("О компании", callback_data='curator_about')],
         [InlineKeyboardButton("Инструкция и регламент", callback_data='curator_instructions')],
@@ -210,23 +216,24 @@ async def curator_about(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ])
     )
 
+
+
 async def curator_instructions(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     keyboard = [
-        [InlineKeyboardButton("Документооборот", url="https://example.com/guide/document-flow")],
-        [InlineKeyboardButton("Касса", url="https://example.com/guide/cash-register")],
+        [InlineKeyboardButton("Документооборот", url="https://")],
+        [InlineKeyboardButton("Касса", url="https://")],
         [InlineKeyboardButton("Назад", callback_data='back_to_curator')]
     ]
     await query.edit_message_text(
         text="📚 Инструкции и регламенты:",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
-
 async def curator_courses(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     keyboard = [
-        [InlineKeyboardButton("Летняя школа", url="https://example.com/courses/summer")],
-        [InlineKeyboardButton("Основные курсы", url="https://example.com/courses/main")],
+        [InlineKeyboardButton("Летняя школа", url="https://")],
+        [InlineKeyboardButton("Основные курсы", url="https://")],
         [InlineKeyboardButton("Назад", callback_data='back_to_curator')]
     ]
     await query.edit_message_text(
@@ -234,16 +241,16 @@ async def curator_courses(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
+
 async def curator_structure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.edit_message_text(
         text="Структура компании:",
         reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton("Подробнее", url="https://example.com/structure")],
+            [InlineKeyboardButton("Подробнее", url="https://")],
             [InlineKeyboardButton("Назад", callback_data='back_to_curator')]
         ])
     )
-
 async def curator_partners(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     keyboard = [
@@ -256,10 +263,12 @@ async def curator_partners(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
+
+
 async def curator_rost(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     keyboard = [
-        [InlineKeyboardButton("Олимпиада", url="https://example.com/rost/olympiad")],
+        [InlineKeyboardButton("Олимпиада", url="https://")],
         [InlineKeyboardButton("Назад к партнёрам", callback_data='curator_partners')]
     ]
     await query.edit_message_text(
@@ -270,7 +279,7 @@ async def curator_rost(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def curator_proskul(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     keyboard = [
-        [InlineKeyboardButton("Курсы", url="https://example.com/proskul/courses")],
+        [InlineKeyboardButton("Курсы", url="https://")],
         [InlineKeyboardButton("Назад к партнёрам", callback_data='curator_partners')]
     ]
     await query.edit_message_text(
@@ -278,28 +287,29 @@ async def curator_proskul(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
+
 async def curator_motivation(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     keyboard = [
-        [InlineKeyboardButton("Обратная связь", url="https://example.com/motivation/feedback")],
+        [InlineKeyboardButton("Обратная связь", url="https://")],
         [InlineKeyboardButton("Назад", callback_data='back_to_curator')]
     ]
     await query.edit_message_text(
         text="Мотивационная программа:",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
-
 async def curator_phones(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.edit_message_text(
         text="Полезные телефоны:",
         reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton("Список телефонов", url="https://example.com/phones")],
+            [InlineKeyboardButton("Список телефонов", url="https://")],
             [InlineKeyboardButton("Назад", callback_data='back_to_curator')]
         ])
     )
 
-# ===== ОБРАБОТКА КНОПОК =====
+
+
 
 async def button_click(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -331,22 +341,19 @@ async def button_click(update: Update, context: ContextTypes.DEFAULT_TYPE):
         'curator_proskul': curator_proskul
     }
     
+    
+    
     if query.data in handlers:
         await handlers[query.data](update, context)
 
-# ===== ЗАПУСК БОТА =====
+
 
 def main():
-    init_db()  # Инициализация базы данных
-    
+    init_db()  
     app = Application.builder().token(TOKEN).build()
-    
-    # Обработчики команд
     app.add_handler(CommandHandler('start', start))
     app.add_handler(CallbackQueryHandler(button_click))
-    
     logger.info("Бот запущен!")
     app.run_polling()
-
 if __name__ == '__main__':
     main()
